@@ -1,0 +1,23 @@
+{
+  "thresholds": {
+    "temperature": {
+      "min": -25.0,
+      "max": 75.0
+    },
+    "battery": {
+      "min": 15.0,
+      "max": 100.0
+    },
+    "signal": {
+      "min": -112.0,
+      "max": -40.0
+    },
+    "velocity": {
+      "min": 7.48,
+      "max": 7.86
+    }
+  },
+  "windowSize": 25,
+  "zThreshold": 2.8,
+  "multivariateThreshold": 4.5
+}

@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  ground-station:
+    container_name: orbital-eye-station
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - GNURADIO_AUTH_TOKEN=${GNURADIO_AUTH_TOKEN:-ORBITAL-EYE-SDR-DEMO-KEY-2026}
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN:-astrova-telemetry-token-2026}
+      - INFLUXDB_ORG=${INFLUXDB_ORG:-astrova}
+      - INFLUXDB_BUCKET=${INFLUXDB_BUCKET:-telemetry}
+    restart: unless-stopped
+    depends_on:
+      - influxdb
+
+  influxdb:
+    image: influxdb:2.7-alpine
+    container_name: astrova-tsdb-influx
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=astrova_operator
+      - DOCKER_INFLUXDB_INIT_PASSWORD=AstrovaSecureTsdb2026Password!
+      - DOCKER_INFLUXDB_INIT_ORG=astrova
+      - DOCKER_INFLUXDB_INIT_BUCKET=telemetry
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=astrova-telemetry-token-2026
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    restart: unless-stopped
+
+volumes:
+  influxdb-data:
