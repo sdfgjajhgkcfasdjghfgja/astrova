@@ -13,7 +13,6 @@ import sys
 import json
 from anomaly_engine import (
     AnomalyDetector,
-    RunningStats,
     THRESHOLDS,
     unpack_ccsds_packet,
     draw_initial_header,
@@ -23,7 +22,9 @@ from anomaly_engine import (
 )
 
 def run_detector():
-    detector = AnomalyDetector()
+    tle1 = sys.argv[1] if len(sys.argv) > 1 else None
+    tle2 = sys.argv[2] if len(sys.argv) > 2 else None
+    detector = AnomalyDetector(tle1, tle2)
     
     # Render initial UI header in terminal
     draw_initial_header()
