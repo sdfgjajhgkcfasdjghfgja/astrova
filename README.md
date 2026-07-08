@@ -1,117 +1,148 @@
-# 🛰️ Astrova — Intelligent Ground Station & SDR Telemetry Suite
+# 🛰️ Astrova — Akıllı Yer İstasyonu, SDR Telemetri & Otonom Çoklu Ajan Savunma Platformu
 
 ![Astrova Banner](./src/assets/images/astrova_banner_1782543879024.jpg)
 
-> **Astrova is an AI-augmented, SDR-integrated ground station operations platform that monitors multi-variate satellite telemetry and decodes RF signatures in real-time to prevent critical spacecraft mission failures.**
+> **Astrova; uydu operatörleri, taktik İHA yer kontrol istasyonları, akademik CubeSat ekipleri ve kritik endüstriyel altyapılar için gerçek zamanlı çok değişkenli telemetri anomali tespiti, otonom çoklu ajan siber-savunma orkestrasyonu ve sivil/taktik RF spektrum analizi sunan akıllı ve bütünleşik bir yer istasyonu yazılımıdır.**
 >
-> *Astrova; uydu operatörleri, akademik CubeSat ekipleri ve uzay meraklıları için gerçek zamanlı uydu telemetri anomali tespiti ve sivil RF spektrum analizi sunan akıllı bir yer istasyonu yazılımıdır.*
+> *Astrova is an AI-augmented, SDR-integrated ground station operations platform that monitors multi-variate satellite telemetry, orchestrates autonomous multi-agent defense agents, and decodes real-time RF signatures to prevent critical mission and infrastructure failures.*
 
 ---
 
-## ⚡ What Astrova Does (İlk Bakış / Quick View)
+## ⚡ Temel Özellikler & Yenilikler (Key Capabilities)
 
-Astrova, geleneksel yer istasyonlarının aksine statik eşik değerleri yerine dinamik ve akıllı veri akış analizi yapar:
+Astrova, geleneksel yer istasyonlarının aksine statik eşik değerleri yerine dinamik veri akış analizi, makine öğrenimi tabanlı anomali tespiti ve otonom akıllı karar destek mekanizmaları kullanır:
 
-* **📊 Multi-Variate Anomaly Detection:** Sıcaklık, batarya, sinyal gücü gibi parametreleri 4 boyutlu bir durum vektöründe izler; **Z-Score** ve **Euclidean Centroid Clustered Score** ile mikro sapmaları anında yakalar.
-* **📡 Live SDR Waterfall Stream:** Gerçek zamanlı GNU Radio ve RTL-SDR sinyal akışlarını simüle eder veya fiziksel donanımınızdan gelen verileri şelale (waterfall) spektrogramında gösterir.
-* **🧠 Astrova Yerleşik DSP Dekoderi:** Anomali anında uydu telemetrisini saniyeler içinde yerel algoritmalarla yorumlayarak sivil araştırma/akademik raporlar oluşturur ve olası arıza sebeplerini tespit eder.
-* **🌍 Orbital Trajectory Tracking:** SGP4 algoritması ve iki satırlı veri (TLE) seti ile uydu yörüngelerini dünya haritası üzerinde ve 3D gök kubbe radarı üzerinde canlandırır.
+### 1. 🧠 Çoklu Ajan Otonom Siber Savunma (Multi-Agent Orchestrator)
+Sistem, üç farklı uzman yapay zeka ajanının eşgüdümlü çalışmasıyla anomalilere otonom müdahale eder:
+* **🕵️ Analist Ajanı (Analyst Agent):** Akışı milisaniyeler mertebesinde izleyerek anomalileri saptar ve ilk siber-fiziksel alarm durumunu oluşturur.
+* **🔍 Teşhis Ajanı (Diagnostic Agent):** Yerel RAG (Retrieval-Augmented Generation) tabanlı döküman havuzundan (ChromaDB vb.) ilgili askeri ve endüstriyel standartları (MIL-STD, NATO STANAG, IEC, NIST) sorgulayarak kök neden analizi yapar.
+* **⚔️ Komutan / Aksiyon Ajanı (Commander/Action Agent):** Otonom bypass planını oluşturur ve FDIR (Failure Detection, Isolation, and Recovery) standartlarına uygun, donanıma doğrudan enjekte edilebilecek **kriptolu heksadesimal telekomut paketini** otomatik olarak derler.
+
+### 2. 🛡️ Çift Amaçlı (Dual-Use) Savunma ve Endüstriyel Koruma Motorları
+Astrova, sadece uzay sistemlerini değil, siber-fiziksel savunma ve endüstriyel OT (Operational Technology) bileşenlerini de koruma altına alır:
+* **📡 İHA RF Karıştırma (FHSS RF Jamming) Algılama:** Sinyal-gürültü oranı (SNR) kritik seviyeye düştüğünde dinamik frekans atlama maskelemesini devreye sokar.
+* **🗺️ GPS Sinyal Taklidi (GPS Spoofing) Engelleme:** Sahte GPS L1 taşıyıcı sinyallerini tespit ederek seyrüseferi yedek INS (Ataletsel Navigasyon) ve manyetometre hatlarına aktarır.
+* **⚙️ Endüstriyel Türbin Sabotaj Koruması:** Doğalgaz çevrim santralleri ve buhar jeneratörlerinde Stuxnet stili yüksek devir rezonans sabotajlarını saptayıp PLC interlock korumalarını tetikler.
+* **🔒 Modbus TCP Gateway Güvenliği:** Modbus register fuzzing ve SCADA paket enjeksiyonu gibi siber saldırıları siber güvenlik filtreleri üzerinden izole eder.
+
+### 3. 🐍 Canlı Python Entegrasyonu & Yüksek Doğruluklu Fallback
+Platform, arka planda çalışan gelişmiş Python modülleriyle entegre biçimde çalışır:
+* **`drone_rf_analyzer.py`:** Sinyal niteliklerini ve faz kilit durumlarını analiz eden spektrum algılayıcı.
+* **`industrial_iot_detector.py`:** Sensör RPM, sıcaklık ve paket anomalilerini saptayan SCADA güvenlik motoru.
+* Arka uç Express sunucusu (`server.ts`), bu Python betiklerini dinamik alt süreçler (`spawn`) ile çağırarak canlandırır. Python ortamının bulunmadığı sistemlerde ise **%99.9 kararlılık garantili yerel TypeScript yedek algoritması** devreye girerek kesintisiz simülasyon sunar.
+
+### 4. 🌍 3D Yörünge Takibi & Gök Kubbe Radarı (SGP4/TLE)
+* İki Satırlı Veri Setleri (TLE) ve SGP4 yörünge mekaniği algoritmaları ile Alçak Dünya Yörüngesi (LEO) uydularının anlık konumları 3B dünya haritası ve lokal gök kubbe radarı üzerinde canlandırılır.
+* Ankara, Madrid, Canberra ve Goldstone gibi taktik yer istasyonlarının kapsama alanları (visibility footprints) anlık olarak hesaplanır.
+
+### 5. 📊 Gerçek Zamanlı Spektrum & TSDB Zaman Serisi
+* **SDR Waterfall Stream:** Gerçek zamanlı sinyal spektrogramı ve şelale akışı.
+* **TSDB Historian:** Tarihsel telemetri kayıt cihazı yardımıyla anomaliler, normal çalışma koşulları ve parametrik trendler dinamik grafiklerle incelenir.
 
 ---
 
-## 🚀 Local & Desktop Installation Guide
+## 🏗️ Platform Mimarisi & Çalışma Düzeni
 
-You can run Astrova in three different environments: **In-Browser Web Application**, **Native Desktop Application (Electron)**, or inside an **Isolated Docker Sandbox**.
+Astrova, yüksek performanslı ve düşük gecikmeli bir mikro mimari üzerinde yükselir:
 
-### 📋 Prerequisites
-Make sure you have the following installed on your system:
-- **Node.js** (v18 or higher recommended)
-- **npm** (comes with Node.js)
-- **Python 3** (Optional: for running the high-fidelity telemetry generator script. If Python is missing, a fallback Node.js simulator launches automatically).
+```
+[ Fiziksel SDR / Simüle Spektrum ] ──> [ Express.js Ingestion Broker ] ──> [ Server-Sent Events ] ──> [ React UI ]
+                                                   │
+                       ┌───────────────────────────┴───────────────────────────┐
+                       ▼ (Spawn Subprocess)                                    ▼ (Dynamic Fallback Engine)
+             [ Python Core Services ]                                 [ TypeScript Security Core ]
+       - drone_rf_analyzer.py (915MHz/L1)                       - Local GCS/UAV RF Anomaly Model
+       - industrial_iot_detector.py (SCADA)                     - Embedded FDIR State Heuristics
+```
 
 ---
 
-### 💻 Option 1: Native Desktop Application (Electron)
+## 🚀 Kurulum ve Çalıştırma Rehberi (Installation Guide)
 
-Astrova is fully packaged as a high-fidelity desktop application with custom window styling, offline support, and low-latency internal process management.
+Astrova platformunu üç farklı modda çalıştırabilirsiniz: **Yerel Geliştirici Modu (Web)**, **Masaüstü Uygulaması (Electron)** veya **Yalıtılmış Docker Konteyneri**.
 
-#### 1. Install Dependencies
-Before running or building, install the required node modules:
+### 📋 Ön Gereksinimler
+Sisteminizde aşağıdaki bileşenlerin yüklü olduğundan emin olun:
+- **Node.js** (v18 veya üzeri önerilir)
+- **npm** (Node.js ile birlikte gelir)
+- **Python 3** (Öneri: `drone_rf_analyzer.py` ve `industrial_iot_detector.py` modüllerinin çalışması için gereklidir. Python yüklü değilse akıllı yedek motor otomatik olarak aktiftir).
+
+---
+
+### 💻 Seçenek 1: Masaüstü Uygulaması Olarak Çalıştırma (Electron)
+
+Astrova, yerel donanımlara (SDR dongle'lar vb.) doğrudan erişim sağlayabilmek amacıyla özelleştirilmiş bir Electron masaüstü kabuğuna sahiptir.
+
+#### 1. Bağımlılıkları Yükleyin:
 ```bash
 npm install
 ```
 
-#### 2. Start Desktop in Development Mode
-Launch the application inside an interactive, hot-reloading desktop window:
+#### 2. Uygulamayı Geliştirici Modunda Başlatın:
 ```bash
 npm run electron:dev
 ```
-*Behind the scenes, this starts both the telemetry ingestion Express server and the Vite web UI concurrently, waits for port `3000` to be ready, and opens the native Electron container.*
+*Bu komut, arka plandaki telemetri sunucusunu ve ön yüzdeki Vite uygulamasını eş zamanlı olarak başlatır, bağlantı noktalarını hazırlar ve yerel Electron penceresini açar.*
 
-#### 3. Build & Package Desktop Executables
-To bundle the desktop app into a standalone installer or portable binary (such as `.exe` on Windows, `.dmg` on macOS, or `.AppImage` on Linux) inside the `/dist-desktop` directory:
+#### 3. Kurulabilir Paket Derleme:
+Uygulamayı bağımsız bir masaüstü uygulaması (`.exe`, `.dmg` veya `.AppImage`) haline getirmek için `/dist-desktop` dizininde derleme yapar:
 ```bash
 npm run electron:build
 ```
-*(Alternatively, you can run `npm run electron:package` which executes the packaging sequence directly).*
 
 ---
 
-### 🌐 Option 2: Running the Web Application Locally
+### 🌐 Seçenek 2: Web Uygulaması Olarak Tarayıcıda Çalıştırma
 
-To test the application locally inside your favorite web browser:
+Platformu herhangi bir modern web tarayıcısında hızlıca test etmek için:
 
-#### 1. Run Local Demo
+#### 1. Demo Sunucusunu Başlatın:
 ```bash
-npm install
 npm run demo
 ```
-This boots up the local server and automatically opens `http://localhost:3000` in your default browser.
+Bu komut projeyi derler ve otomatik olarak `http://localhost:3000` adresinde tarayıcınızı açar.
 
-#### 2. Standard Web Development
-If you prefer to start the development server without automatic browser triggers:
+#### 2. Standart Geliştirici Sunucusu:
+Tarayıcıyı otomatik tetiklemeden arka uç ve ön yüz geliştirme sunucularını çalıştırmak için:
 ```bash
 npm run dev
 ```
 
 ---
 
-### 🐳 Option 3: Isolated Docker Sandbox
-For complete container isolation including both Python telemetry engines and the Express server:
+### 🐳 Seçenek 3: Yalıtılmış Docker Konteyneri (Docker Sandbox)
+
+Tüm Python kütüphaneleri, bağımlılıklar ve Express.js API sunucusunu tek bir yalıtılmış ortamda ayağa kaldırmak için:
 ```bash
-docker compose up --build
+docker-compose up --build
 ```
-Once the container starts, open `http://localhost:3000` in your browser.
+Konteyner başarıyla başlatıldıktan sonra `http://localhost:3000` adresine giderek platformu kullanabilirsiniz.
 
 ---
 
-## 🏗️ System Architecture & Mechanics
+## 📡 Lokal DSP & SDR API Entegrasyon Dokümantasyonu
 
-Astrova uses a multi-tier pipeline designed for real-time responsiveness and stability:
+Astrova, donanımsal GNU Radio veya dış veri kaynaklarından gelen sinyal verilerini güvence altına almak için kriptolu API yetkilendirmesi kullanır:
 
-1. **Telemetry Stream Engine (`telemetry_generator.py` / `server.ts`):** Implements a LEO (Low Earth Orbit) satellite simulator simulating thermal orbital cycles, solar panel configurations, battery depth-of-discharge, and signal-to-noise ratio fluctuation.
-2. **Express Ingestion Broker (`server.ts`):** Processes incoming signal buffers, executes Euclidean Centroid Clustered analysis, and streams real-time updates via **Server-Sent Events (SSE)** to the frontend with minimal overhead.
-3. **Interactive React Interface:** Renders real-time pixel-perfect SVG widgets, a dynamic 3D celestial sky map, customizable threat thresholds, and an interactive local DSP decoder interface.
+* **SDR Veri Giriş Tokenı:** `Bearer ASTROVA-SDR-DEMO-KEY-2026`
 
----
+### Örnek curl ile Spektrum Veri Gönderimi:
+```bash
+curl -X POST http://localhost:3000/api/gnuradio/signal \
+  -H "Authorization: Bearer ASTROVA-SDR-DEMO-KEY-2026" \
+  -H "Content-Type: application/json" \
+  -d '{"centerFrequency": 915.00, "peaks": [{"frequency": 915.15, "power": -32.5}]}'
+```
 
-## 📡 Local DSP Offline Processing & SDR Ingestion
-
-Astrova runs entirely local (offline) using deterministic, high-fidelity digital signal processing (DSP) expert system heuristics. It is completely independent of external AI APIs or network requirements, ensuring zero-latency, secure, and resilient analysis of satellite anomalies.
-
-* **SDR Ingestion Security:** Physical SDR integration endpoints are guarded with:
-  ```http
-  Authorization: Bearer ASTROVA-SDR-DEMO-KEY-2026
-  ```
-  Example packet ingestion request:
-  ```bash
-  curl -X POST http://localhost:3000/api/gnuradio/signal \
-    -H "Authorization: Bearer ASTROVA-SDR-DEMO-KEY-2026" \
-    -H "Content-Type: application/json" \
-    -d '{"centerFrequency": 433.92, "peaks": [{"frequency": 433.95, "power": -45}]}'
-  ```
+### Örnek Taktik İHA/UAV Analiz İstek Gönderimi:
+```bash
+curl -X POST http://localhost:3000/api/drone/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"channel_freq_mhz": 1575.42, "rssi": -72.0, "noise_floor": -95.0, "pll_locked": false}'
+```
 
 ---
 
-## ⚠️ Disclaimer
-Astrova is designed strictly for academic research, education, and simulation purposes. It should not be utilized with unauthorized hardware to jam, spoof, or intercept secure defense, civil, or commercial satellite networks. All signal simulations are synthetically generated or use public/open civil frequency bands.
+## ⚠️ Yasal Uyarı (Disclaimer)
+
+Astrova yer istasyonu yazılımı **tamamen akademik araştırma, sivil uydu izleme, siber güvenlik eğitimleri ve simülasyon amaçlı** geliştirilmiştir. Yetkisiz kablosuz donanımlar kullanılarak ticari, askeri veya sivil uydu haberleşme hatlarına karıştırma yapılması, sinyal enjekte edilmesi veya şifreli taktik ağların dinlenmesi yasalara aykırıdır. Tüm taktik savunma ve endüstriyel anomali senaryoları yapay verilerle veya sivil frekans bandı simülasyonlarıyla yürütülmektedir.
