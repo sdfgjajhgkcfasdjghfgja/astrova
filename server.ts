@@ -32,6 +32,10 @@ if (!process.env.NODE_ENV) {
 }
 
 // 📡 Mount Root express sub-routers & healthchecks
+app.get("/api/metrics", (req, res) => {
+  res.json(telemetryService.getMetricsReporting());
+});
+
 app.use(rootRouter);
 
 // 🚀 Initialize and trigger underlying telemetry ingestion loops

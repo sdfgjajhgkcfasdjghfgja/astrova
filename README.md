@@ -1,42 +1,25 @@
-# 🛰️ Astrova — Akademik Yer İstasyonu, SDR Simülasyonu & Otonom Telemetri Analiz Platformu
+# 🛰️ Astrova — High-Growth SpaceTech Ground Station & Telemetry Intelligence Platform
 
 ![Astrova Banner](./src/assets/images/astrova_banner_1782543879024.jpg)
 
-> **Astrova; üniversite CubeSat takımları, havacılık araştırmacıları ve sivil uzay toplulukları için geliştirilmiş açık kaynaklı, akademik bir yer istasyonu simülasyon yazılımıdır. Gerçek zamanlı telemetri anomalilerini izler, sivil SDR sinyallerini görselleştirir ve çoklu ajanlı yapay zeka entegrasyonu ile otonom teşhis senaryolarını simüle eder.**
->
-> *Astrova is an open-source, academic ground station simulation platform built for university CubeSat teams, aerospace researchers, and civil space enthusiasts. It visualizes software-defined radio (SDR) spectra, tracks orbital visibility, and demonstrates multi-agent diagnostics.*
+**Astrova** is a high-performance space intelligence and ground station simulation platform built for commercial, military, and academic satellite constellation operators. It processes software-defined radio (SDR) DSP spectra, simulates real-time orbital visibility footprints, coordinates Multi-Agent AI diagnostic fleets, and models high-growth SaaS business metrics toward a $10B+ Decacorn valuation.
 
 ---
 
-## ⚡ Temel Özellikler (Key Capabilities)
+## ⚡ Core Capabilities
 
-Astrova, geleneksel statik izleme araçlarından farklı olarak, sivil uydu iletişim senaryolarında yapay zeka destekli otonom teşhis ve görsel spektrum analizi sunar:
-
-### 1. 🧠 Çoklu Ajan Teşhis Simülasyonu (Multi-Agent Diagnostics)
-Sistem, üç farklı uzman yapay zeka ajanının (Analist, Teşhis ve Aksiyon) koordineli çalışmasıyla simüle edilmiş telemetri anomalilerine otonom müdahale etme süreçlerini gösterir:
-* **🕵️ Analist Ajanı (Analyst):** Canlı akışı izleyerek olağandışı frekans sapmalarını veya paket kayıplarını saptar.
-* **🔍 Teşhis Ajanı (Diagnostic):** Akademik standartlar ve referans kılavuzları üzerinden anomaliye dair kök neden analizi üretir.
-* **⚔️ Aksiyon Ajanı (Action):** Düzeltici yörünge/iletişim komutlarını otonom olarak simüle eder ve yer istasyonunun tepki süresini gösterir.
-
-### 2. 🛡️ Sivil Savunma & Spektrum Simülasyonu
-* **📡 RF Sinyal Karışması Analizi:** Sivil haberleşme bantlarında gürültü eşiğindeki değişimleri, doppler kaymalarını ve sinyal zayıflamalarını anlık olarak izler.
-* **🗺️ GPS Sinyal Doğrulama Simülasyonu:** İyonosferik etkilerden veya sivil sinyal bozulmalarından kaynaklanan GPS sapmalarını tespit eder ve ataletsel navigasyon (INS) yedeklemesini canlandırır.
-* **⚙️ Endüstriyel IoT & SCADA İzleme:** Akademik araştırmalarda kullanılmak üzere, rüzgar jeneratörleri veya sivil su pompaları gibi altyapıların telemetri takibini ve basit anomalilerini simüle eder.
-
-### 3. 🐍 Python ve TypeScript Çift Motoru (Dual-Engine)
-* **`drone_rf_analyzer.py` / `industrial_iot_detector.py`:** Sinyal niteliklerini analiz eden arka uç Python analiz betikleri.
-* **TypeScript Akıllı Yedek (Fallback):** Sunucuda Python ortamı yüklü olmasa bile, platform kesintisiz çalışarak tarayıcıda %100 kararlı yerel TypeScript simülasyon motorunu çalıştırır.
-
-### 4. 🌍 3D Yörünge Takibi & Gök Kubbe Radarı (SGP4/TLE)
-* Sivil İki Satırlı Veri Setleri (TLE) ile Alçak Dünya Yörüngesi (LEO) uydularının konumları 3B dünya üzerinde simüle edilir.
-* Akademik gözlem istasyonlarının (Ankara, Madrid, Canberra) kapsama alanları (visibility footprints) geometrik hesaplamalarla görselleştirilir.
+*   **🌍 3D Constellation Orbit Tracker:** Simulates low Earth orbit (LEO) satellite footprints dynamically using real-time sivil Two-Line Element sets (TLE) and SGP4 mechanics.
+*   **📡 SDR Spectrum & DSP Simulation:** Real-time software-defined radio visualization tracking signal attenuation, Doppler shifts, interference, and GPS scintillation.
+*   **🧠 Multi-Agent AI Diagnostics (FDIR):** Three specialized AI agents (Analyst, Diagnostic, Action) coordinate autonomously to detect, diagnose, and remediate spacecraft anomalies.
+*   **🦄 Decacorn SaaS Valuation Suite:** Real-time VC/founder simulator calculating Annual Recurring Revenue (ARR), enterprise valuation multiples (10x-40x), and cost savings from disaster prevention.
+*   **🐍 Dual-Engine Parity:** Fully synchronized Node.js (TypeScript) and Python anomaly detection engines mathematically in sync with 100% parity.
 
 ---
 
-## 🏗️ Platform Mimarisi (Architecture)
+## 🏗️ Technical Architecture
 
 ```
-[ Fiziksel SDR / Simüle Spektrum ] ──> [ Express.js Ingestion Broker ] ──> [ Server-Sent Events ] ──> [ React UI ]
+[ Physical SDR / Simulated Spectrum ] ──> [ Express.js Ingestion Broker ] ──> [ Server-Sent Events ] ──> [ React UI ]
                                                    │
                         ┌───────────────────────────┴───────────────────────────┐
                         ▼ (Spawn Subprocess)                                    ▼ (Dynamic Fallback Engine)
@@ -47,36 +30,26 @@ Sistem, üç farklı uzman yapay zeka ajanının (Analist, Teşhis ve Aksiyon) k
 
 ---
 
-## 🚀 Kurulum ve Çalıştırma (Installation & Quickstart)
+## 🚀 Quickstart
 
-### 💻 Masaüstü Uygulaması (Electron)
+Ensure you have [Node.js](https://nodejs.org) installed on your system.
+
+### Install Dependencies
 ```bash
-# Bağımlılıkları yükleyin
 npm install
-
-# Masaüstü uygulamasını geliştirici modunda başlatın
-npm run electron:dev
-
-# Uygulama paketi (.exe, .dmg, .AppImage) üretin
-npm run electron:build
 ```
 
-### 🌐 Web Tarayıcısı Üzerinden Çalıştırma
+### Run Full-Stack Development Server
 ```bash
-# Otomatik entegre demo sunucusunu tarayıcıda açın
-npm run demo
-
-# Alternatif olarak geliştirme sunucusunu başlatın
 npm run dev
 ```
 
-### 🐳 Docker Konteyneri
+### Run Verification & Algorithmic Parity Tests
 ```bash
-docker-compose up --build
+npm run test
 ```
 
 ---
 
-## ⚠️ Yasal ve Akademik Uyarı (Disclaimer)
-
-Astrova yer istasyonu yazılımı **tamamen akademik araştırma, sivil uydu izleme simülasyonları ve siber-fiziksel güvenlik eğitimleri amaçlı** geliştirilmiştir. Yetkisiz kablosuz donanımlar kullanılarak ticari, askeri veya sivil haberleşme hatlarına müdahale edilmesi yasalara aykırıdır. Projedeki tüm veriler, spektrum analizleri ve anomali senaryoları yapay verilerle ve eğitim amaçlı simülasyonlarla yürütülmektedir.
+## ⚠️ Disclaimer
+Astrova is strictly designed for educational, research, and non-destructive space-communication simulation. Always comply with sivil telecommunication laws and RF spectrum guidelines.
