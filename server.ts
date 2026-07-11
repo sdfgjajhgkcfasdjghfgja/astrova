@@ -19,6 +19,8 @@ import { logger } from "./src/server/utils/logger";
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 // Enable secure HTTP headers using Helmet
 app.use(helmet({
   contentSecurityPolicy: process.env.NODE_ENV === "production" ? {
@@ -42,6 +44,9 @@ const apiLimiter = rateLimit({
   limit: 100,
   standardHeaders: "draft-7",
   legacyHeaders: false,
+  keyGenerator: (req) => {
+    return (req.headers['x-forwarded-for'] as string) || req.ip || 'unknown';
+  },
   message: {
     error: "Too many requests from this IP, please try again later after 15 minutes."
   }
@@ -56,7 +61,7 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-// Enable generous limits for large telemetry payload configurations & satellite manuals (RAG)
+// Enable generous limits for large telemetry payload configurations & machine manuals (RAG)
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
@@ -86,33 +91,33 @@ app.get("/metrics", (req, res) => {
   const data = telemetryService.getMetricsReporting();
   
   const formatted = [
-    `# HELP astrova_uptime_seconds Astrova server uptime in seconds`,
-    `# TYPE astrova_uptime_seconds gauge`,
-    `astrova_uptime_seconds ${Math.floor(data.uptime)}`,
+    `# HELP pulseguard_uptime_seconds PulseGuard server uptime in seconds`,
+    `# TYPE pulseguard_uptime_seconds gauge`,
+    `pulseguard_uptime_seconds ${Math.floor(data.uptime)}`,
     ``,
-    `# HELP astrova_telemetry_packets_processed_total Total number of telemetry packets processed`,
-    `# TYPE astrova_telemetry_packets_processed_total counter`,
-    `astrova_telemetry_packets_processed_total ${data.metrics.totalTelemetryPacketsProcessed}`,
+    `# HELP pulseguard_telemetry_packets_processed_total Total number of sensor packets processed`,
+    `# TYPE pulseguard_telemetry_packets_processed_total counter`,
+    `pulseguard_telemetry_packets_processed_total ${data.metrics.totalTelemetryPacketsProcessed}`,
     ``,
-    `# HELP astrova_demo_page_views_total Total number of demo page views`,
-    `# TYPE astrova_demo_page_views_total counter`,
-    `astrova_demo_page_views_total ${data.metrics.totalDemoPageViews}`,
+    `# HELP pulseguard_demo_page_views_total Total number of demo page views`,
+    `# TYPE pulseguard_demo_page_views_total counter`,
+    `pulseguard_demo_page_views_total ${data.metrics.totalDemoPageViews}`,
     ``,
-    `# HELP astrova_active_subscribed_teams Number of active subscribed teams`,
-    `# TYPE astrova_active_subscribed_teams gauge`,
-    `astrova_active_subscribed_teams ${data.metrics.activeSubscribedTeams}`,
+    `# HELP pulseguard_active_subscribed_teams Number of active subscribed teams`,
+    `# TYPE pulseguard_active_subscribed_teams gauge`,
+    `pulseguard_active_subscribed_teams ${data.metrics.activeSubscribedTeams}`,
     ``,
-    `# HELP astrova_cumulative_alerts_triggered Total cumulative alerts triggered including historic baseline`,
-    `# TYPE astrova_cumulative_alerts_triggered counter`,
-    `astrova_cumulative_alerts_triggered ${data.metrics.cumulativeAlertsTriggered}`,
+    `# HELP pulseguard_cumulative_alerts_triggered Total cumulative alerts triggered including historic baseline`,
+    `# TYPE pulseguard_cumulative_alerts_triggered counter`,
+    `pulseguard_cumulative_alerts_triggered ${data.metrics.cumulativeAlertsTriggered}`,
     ``,
-    `# HELP astrova_detection_precision Detection precision rate`,
-    `# TYPE astrova_detection_precision gauge`,
-    `astrova_detection_precision ${data.metrics.detectionPrecision}`,
+    `# HELP pulseguard_detection_precision Detection precision rate`,
+    `# TYPE pulseguard_detection_precision gauge`,
+    `pulseguard_detection_precision ${data.metrics.detectionPrecision}`,
     ``,
-    `# HELP astrova_false_alarm_rate False alarm rate`,
-    `# TYPE astrova_false_alarm_rate gauge`,
-    `astrova_false_alarm_rate ${data.metrics.falseAlarmRate}`
+    `# HELP pulseguard_false_alarm_rate False alarm rate`,
+    `# TYPE pulseguard_false_alarm_rate gauge`,
+    `pulseguard_false_alarm_rate ${data.metrics.falseAlarmRate}`
   ].join("\n");
 
   res.setHeader("Content-Type", "text/plain; version=0.0.4; charset=utf-8");
@@ -127,7 +132,7 @@ telemetryService.start();
 // Serve compiled static files in production or run Vite Dev middleware in development
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
-    logger.info("⚡ ASTROVA CORE: Injecting Vite Development HMR middleware...");
+    logger.info("⚡ PULSEGUARD CORE: Injecting Vite Development HMR middleware...");
     const vite = await createViteServer({
       root: path.join(process.cwd(), "packages/frontend"),
       configFile: path.join(process.cwd(), "packages/frontend/vite.config.ts"),
@@ -136,7 +141,7 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    logger.info("📦 ASTROVA CORE: Serving production web build static files...");
+    logger.info("📦 PULSEGUARD CORE: Serving production web build static files...");
     const distPath = path.join(process.cwd(), "dist");
     const indexPath = path.join(distPath, "index.html");
     
@@ -148,11 +153,11 @@ async function startServer() {
           <!DOCTYPE html>
           <html>
             <head>
-              <title>Astrova // Ground Station Offline Fallback</title>
+              <title>PulseGuard // Industrial Monitoring Offline Fallback</title>
               <meta charset="utf-8">
               <style>
                 body {
-                  background-color: #050608;
+                  background-color: #0f172a;
                   color: #e2e8f0;
                   font-family: 'JetBrains Mono', monospace;
                   padding: 40px;
@@ -161,30 +166,30 @@ async function startServer() {
                 .container {
                   max-width: 800px;
                   margin: 60px auto;
-                  border: 1px solid rgba(16, 185, 129, 0.2);
-                  background-color: #0b0d12;
+                  border: 1px solid rgba(34, 211, 238, 0.2);
+                  background-color: #0c0e14;
                   padding: 40px;
                   border-radius: 8px;
                   box-shadow: 0 4px 24px rgba(0,0,0,0.7);
                 }
                 h1 {
-                  color: #10b981;
-                  border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+                  color: #22d3ee;
+                  border-bottom: 1px solid rgba(34, 211, 238, 0.2);
                   padding-bottom: 15px;
                   font-size: 24px;
                   margin-top: 0;
                 }
                 pre {
                   background-color: #020617;
-                  color: #34d399;
+                  color: #22d3ee;
                   padding: 15px;
                   border-radius: 6px;
                   overflow-x: auto;
-                  border: 1px solid rgba(16, 185, 129, 0.15);
+                  border: 1px solid rgba(34, 211, 238, 0.15);
                   font-size: 13px;
                 }
                 .section-title {
-                  color: #38bdf8;
+                  color: #22d3ee;
                   font-weight: bold;
                   margin-top: 25px;
                   margin-bottom: 5px;
@@ -195,7 +200,7 @@ async function startServer() {
             </head>
             <body>
               <div class="container">
-                <h1>🛰️ Astrova Yer İstasyonu / Ground Station</h1>
+                <h1>🏭 PulseGuard Industrial IoT Platform</h1>
                 <p><strong>Backend API Server running successfully on port ${PORT}!</strong></p>
                 <p>But the frontend static build is not compiled yet.</p>
                 <div class="section-title">🛠️ Compilation Commands:</div>
@@ -214,12 +219,12 @@ async function startServer() {
   app.use(errorMiddleware);
 
   const server = app.listen(PORT, "0.0.0.0", () => {
-    logger.info(`🌌 ASTROVA: Full-stack Space Ground Station operational at http://0.0.0.0:${PORT}`);
+    logger.info(`🌌 PULSEGUARD: Full-stack Industrial IoT Platform operational at http://0.0.0.0:${PORT}`);
   });
 
   // --- Graceful Shutdown Handler ---
   const handleShutdown = (signal: string) => {
-    logger.info(`🛑 Received ${signal}. Shutting down Astrova Ground Station gracefully...`);
+    logger.info(`🛑 Received ${signal}. Shutting down PulseGuard Platform gracefully...`);
     
     // Shut down background services
     anomalyService.shutdown();

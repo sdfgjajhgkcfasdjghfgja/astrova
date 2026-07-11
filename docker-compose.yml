@@ -1,9 +1,9 @@
 version: "3.8"
 
 services:
-  # 🛰️ Astrova TypeScript Ground Station & Web UI
+  # 🏭 PulseGuard Industrial IoT Platform
   frontend:
-    container_name: astrova-frontend-station
+    container_name: pulseguard-frontend
     build:
       context: .
       dockerfile: Dockerfile
@@ -13,10 +13,10 @@ services:
       - NODE_ENV=production
       - PORT=3000
       - GEMINI_API_KEY=${GEMINI_API_KEY:-}
-      - GNURADIO_AUTH_TOKEN=${GNURADIO_AUTH_TOKEN:-ORBITAL-EYE-SDR-DEMO-KEY-2026}
+      - SENSOR_AUTH_TOKEN=${SENSOR_AUTH_TOKEN:-PULSEGUARD-SENSOR-KEY-2026}
       - INFLUXDB_URL=http://influxdb:8086
-      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN:-astrova-telemetry-token-2026}
-      - INFLUXDB_ORG=${INFLUXDB_ORG:-astrova}
+      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN:-pulseguard-telemetry-token-2026}
+      - INFLUXDB_ORG=${INFLUXDB_ORG:-pulseguard}
       - INFLUXDB_BUCKET=${INFLUXDB_BUCKET:-telemetry}
       - BACKEND_API_URL=http://backend:8000
     restart: unless-stopped
@@ -24,9 +24,9 @@ services:
       - influxdb
       - backend
 
-  # 🐍 Astrova Python FastAPI Anomaly Detection Core
+  # 🐍 PulseGuard Python Machine Health Engine
   backend:
-    container_name: astrova-python-backend
+    container_name: pulseguard-python-backend
     build:
       context: ./packages/backend
       dockerfile: ../../packages/backend/Dockerfile
@@ -38,9 +38,9 @@ services:
     depends_on:
       - influxdb
 
-  # 📡 Astrova Real-time Telemetry Simulator Daemon
+  # 📡 PulseGuard Real-time Sensor Data Simulator
   simulator:
-    container_name: astrova-telemetry-simulator
+    container_name: pulseguard-sensor-simulator
     build:
       context: .
       dockerfile: Dockerfile
@@ -54,16 +54,16 @@ services:
   # 📊 Influx Time-Series Database
   influxdb:
     image: influxdb:2.7-alpine
-    container_name: astrova-tsdb-influx
+    container_name: pulseguard-tsdb-influx
     ports:
       - "8086:8086"
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=astrova_operator
-      - DOCKER_INFLUXDB_INIT_PASSWORD=AstrovaSecureTsdb2026Password!
-      - DOCKER_INFLUXDB_INIT_ORG=astrova
+      - DOCKER_INFLUXDB_INIT_USERNAME=pulseguard_operator
+      - DOCKER_INFLUXDB_INIT_PASSWORD=PulseGuardSecureTsdb2026Password!
+      - DOCKER_INFLUXDB_INIT_ORG=pulseguard
       - DOCKER_INFLUXDB_INIT_BUCKET=telemetry
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=astrova-telemetry-token-2026
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=pulseguard-telemetry-token-2026
     volumes:
       - influxdb-data:/var/lib/influxdb2
     restart: unless-stopped

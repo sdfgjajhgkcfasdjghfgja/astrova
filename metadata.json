@@ -1,6 +1,6 @@
 {
-  "name": "Astrova",
-  "description": "Detects satellite telemetry anomalies in real time, featuring live telemetry scans, automated risk grading, and offline signal decryption reports.",
+  "name": "PulseGuard",
+  "description": "Modern Industrial IoT platform for real-time machine monitoring, AI-based anomaly detection, and predictive maintenance.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
