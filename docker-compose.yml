@@ -1,8 +1,9 @@
 version: "3.8"
 
 services:
-  ground-station:
-    container_name: orbital-eye-station
+  # 🛰️ Astrova TypeScript Ground Station & Web UI
+  frontend:
+    container_name: astrova-frontend-station
     build:
       context: .
       dockerfile: Dockerfile
@@ -17,10 +18,40 @@ services:
       - INFLUXDB_TOKEN=${INFLUXDB_TOKEN:-astrova-telemetry-token-2026}
       - INFLUXDB_ORG=${INFLUXDB_ORG:-astrova}
       - INFLUXDB_BUCKET=${INFLUXDB_BUCKET:-telemetry}
+      - BACKEND_API_URL=http://backend:8000
+    restart: unless-stopped
+    depends_on:
+      - influxdb
+      - backend
+
+  # 🐍 Astrova Python FastAPI Anomaly Detection Core
+  backend:
+    container_name: astrova-python-backend
+    build:
+      context: ./packages/backend
+      dockerfile: ../../packages/backend/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - BACKEND_PORT=8000
     restart: unless-stopped
     depends_on:
       - influxdb
 
+  # 📡 Astrova Real-time Telemetry Simulator Daemon
+  simulator:
+    container_name: astrova-telemetry-simulator
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["python3", "./packages/simulators/telemetry_generator.py"]
+    environment:
+      - BACKEND_API_URL=http://backend:8000
+    restart: unless-stopped
+    depends_on:
+      - backend
+
+  # 📊 Influx Time-Series Database
   influxdb:
     image: influxdb:2.7-alpine
     container_name: astrova-tsdb-influx

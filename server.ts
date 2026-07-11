@@ -2,6 +2,9 @@ import "dotenv/config";
 import express from "express";
 import path from "path";
 import fs from "fs";
+import cors from "cors";
+import helmet from "helmet";
+import { rateLimit } from "express-rate-limit";
 import { createServer as createViteServer } from "vite";
 
 import { PORT } from "./src/server/config";
@@ -11,8 +14,47 @@ import { telemetryService } from "./src/server/services/TelemetryService";
 import { anomalyService } from "./src/server/services/AnomalyService";
 import { scannerService } from "./src/server/services/ScannerService";
 import { rotatorService } from "./src/server/services/RotatorService";
+import { swaggerRouter } from "./src/server/utils/swagger";
+import { logger } from "./src/server/utils/logger";
 
 const app = express();
+
+// Enable secure HTTP headers using Helmet
+app.use(helmet({
+  contentSecurityPolicy: process.env.NODE_ENV === "production" ? {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.jsdelivr.net"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      imgSrc: ["'self'", "data:", "blob:", "https:", "referrerPolicy"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      connectSrc: ["'self'", "ws:", "wss:", "http:", "https:"],
+      objectSrc: ["'none'"],
+      upgradeInsecureRequests: [],
+    },
+  } : false,
+  crossOriginEmbedderPolicy: false,
+}));
+
+// Enable Rate Limiting (100 requests per 15 mins per IP) to prevent API abuse
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+  message: {
+    error: "Too many requests from this IP, please try again later after 15 minutes."
+  }
+});
+
+app.use("/api", apiLimiter);
+
+// Enable Cross-Origin Resource Sharing (CORS) for external telemetry dashboard integration
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 // Enable generous limits for large telemetry payload configurations & satellite manuals (RAG)
 app.use(express.json({ limit: "50mb" }));
@@ -31,9 +73,50 @@ if (!process.env.NODE_ENV) {
   }
 }
 
+// 📖 Mount Automatically Generated OpenAPI / Swagger Documentation
+app.use(swaggerRouter);
+
 // 📡 Mount Root express sub-routers & healthchecks
 app.get("/api/metrics", (req, res) => {
   res.json(telemetryService.getMetricsReporting());
+});
+
+// Standard Prometheus metrics endpoint
+app.get("/metrics", (req, res) => {
+  const data = telemetryService.getMetricsReporting();
+  
+  const formatted = [
+    `# HELP astrova_uptime_seconds Astrova server uptime in seconds`,
+    `# TYPE astrova_uptime_seconds gauge`,
+    `astrova_uptime_seconds ${Math.floor(data.uptime)}`,
+    ``,
+    `# HELP astrova_telemetry_packets_processed_total Total number of telemetry packets processed`,
+    `# TYPE astrova_telemetry_packets_processed_total counter`,
+    `astrova_telemetry_packets_processed_total ${data.metrics.totalTelemetryPacketsProcessed}`,
+    ``,
+    `# HELP astrova_demo_page_views_total Total number of demo page views`,
+    `# TYPE astrova_demo_page_views_total counter`,
+    `astrova_demo_page_views_total ${data.metrics.totalDemoPageViews}`,
+    ``,
+    `# HELP astrova_active_subscribed_teams Number of active subscribed teams`,
+    `# TYPE astrova_active_subscribed_teams gauge`,
+    `astrova_active_subscribed_teams ${data.metrics.activeSubscribedTeams}`,
+    ``,
+    `# HELP astrova_cumulative_alerts_triggered Total cumulative alerts triggered including historic baseline`,
+    `# TYPE astrova_cumulative_alerts_triggered counter`,
+    `astrova_cumulative_alerts_triggered ${data.metrics.cumulativeAlertsTriggered}`,
+    ``,
+    `# HELP astrova_detection_precision Detection precision rate`,
+    `# TYPE astrova_detection_precision gauge`,
+    `astrova_detection_precision ${data.metrics.detectionPrecision}`,
+    ``,
+    `# HELP astrova_false_alarm_rate False alarm rate`,
+    `# TYPE astrova_false_alarm_rate gauge`,
+    `astrova_false_alarm_rate ${data.metrics.falseAlarmRate}`
+  ].join("\n");
+
+  res.setHeader("Content-Type", "text/plain; version=0.0.4; charset=utf-8");
+  res.status(200).send(formatted);
 });
 
 app.use(rootRouter);
@@ -44,14 +127,16 @@ telemetryService.start();
 // Serve compiled static files in production or run Vite Dev middleware in development
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
-    console.log("⚡ ASTROVA CORE: Injecting Vite Development HMR middleware...");
+    logger.info("⚡ ASTROVA CORE: Injecting Vite Development HMR middleware...");
     const vite = await createViteServer({
+      root: path.join(process.cwd(), "packages/frontend"),
+      configFile: path.join(process.cwd(), "packages/frontend/vite.config.ts"),
       server: { middlewareMode: true },
       appType: "spa",
     });
     app.use(vite.middlewares);
   } else {
-    console.log("📦 ASTROVA CORE: Serving production web build static files...");
+    logger.info("📦 ASTROVA CORE: Serving production web build static files...");
     const distPath = path.join(process.cwd(), "dist");
     const indexPath = path.join(distPath, "index.html");
     
@@ -129,12 +214,12 @@ async function startServer() {
   app.use(errorMiddleware);
 
   const server = app.listen(PORT, "0.0.0.0", () => {
-    console.log(`\n🌌 ASTROVA: Full-stack Space Ground Station operational at http://0.0.0.0:${PORT}\n`);
+    logger.info(`🌌 ASTROVA: Full-stack Space Ground Station operational at http://0.0.0.0:${PORT}`);
   });
 
   // --- Graceful Shutdown Handler ---
   const handleShutdown = (signal: string) => {
-    console.log(`\n🛑 Received ${signal}. Shutting down Astrova Ground Station gracefully...`);
+    logger.info(`🛑 Received ${signal}. Shutting down Astrova Ground Station gracefully...`);
     
     // Shut down background services
     anomalyService.shutdown();
@@ -142,13 +227,13 @@ async function startServer() {
     rotatorService.shutdown();
 
     server.close(() => {
-      console.log("🔌 Server closed. Exiting process.");
+      logger.info("🔌 Server closed. Exiting process.");
       process.exit(0);
     });
 
     // Force shutdown if taking too long
     setTimeout(() => {
-      console.error("⚠️ Forcefully shutting down due to timeout.");
+      logger.error("⚠️ Forcefully shutting down due to timeout.");
       process.exit(1);
     }, 5000);
   };

@@ -1,76 +1,64 @@
-# 🖥️ Astrova - Masaüstü Uygulaması Rehberi & GitHub Popülerlik Kılavuzu
+# 🖥️ Astrova — Masaüstü Uygulaması Çalıştırma ve Paketleme Rehberi
 
-Tebrikler! **Astrova**, harika siber-punk görsel dili (cyberpunk aesthetic), gerçek zamanlı şelale (waterfall) spektrogram akışı ve Gemini AI destekli akıllı sinyal analiz yetenekleriyle klasik web uygulamalarının ötesine geçerek **müthiş bir masaüstü uygulamasına** dönüştü.
+Astrova, yerel yer istasyonu gereksinimlerine ve masaüstü kullanım senaryolarına yönelik olarak **Electron** entegrasyonu ile yerel bir masaüstü uygulaması olarak çalıştırılabilecek şekilde yapılandırılmıştır. Bu sayede, tarayıcı pencerelerinden bağımsız olarak, yerel donanım bağlantılarına (örn: USB üzerinden SDR çipleri veya seri port üzerinden rotatör bağlantıları) hazır, izole bir masaüstü terminali gibi kullanılabilir.
 
-### ⚡ Hızlı Deneme Sürümü (Try the Product)
-Eğer uygulamayı yerel web tarayıcınızda anında denemek isterseniz:
+Bu kılavuz, projenin masaüstü sürümünün geliştirme modunda nasıl çalıştırılacağını, paketleneceğini (.exe, .dmg, .AppImage) ve yerel mimarinin arka planda nasıl çalıştığını açıklar.
+
+---
+
+## ⚡ Hızlı Yerel Başlatma
+
+Uygulamayı yerel tarayıcınızda veya Docker ortamında anında çalıştırmak isterseniz:
+
 ```bash
 # Geliştirme sunucusunu ve simülasyonları başlatır
-npm run demo
+npm run dev
 ```
-Ardından tarayıcınızda `http://localhost:3000` adresine giderek sistemi test edebilirsiniz! Ayrıca Docker kullanan ekipler için:
+
+Ardından tarayıcınızda `http://localhost:3000` adresine giderek sistemi test edebilirsiniz. Docker kullanan ekipler için:
+
 ```bash
-# Docker üzerinde izole sandbox başlatma
+# Docker üzerinde izole sandbox ortamını başlatır
 docker compose up --build
 ```
 
 ---
 
-Bu kılavuzda, projeyi kendi bilgisayarınızda nasıl masaüstü uygulaması olarak çalıştıracağınızı, paketleyeceğinizi (.exe, .dmg, .AppImage) ve GitHub üzerinde nasıl paylaşıp popüler hale getirebileceğinizi adım adım bulabilirsiniz.
+## 🚀 Masaüstü Uygulamasını Geliştirme Modunda Çalıştırma
 
----
-
-## 🌟 GitHub'da Paylaşırsam Popüler Olur mu?
-
-**KESİNLİKLE EVET!** GitHub topluluğu (özellikle r/cyberpunk, r/selfhosted, r/SDR, ve genel geliştiriciler) bu tür yüksek kaliteli görsel tasarıma sahip olan, gerçekmiş hissi uyandıran simülasyon ve analiz araçlarına bayılır. Astrova'nın popüler olmasını sağlayacak kilit faktörler şunlardır:
-
-1. **Eşsiz Görsel Dil (Aesthetic):** Mat antrasit arka plan, neon camgöbeği sinyal dalgası ve asimetrik veri hatları bilimsel laboratuvar/askeri radar ekranı havası veriyor.
-2. **Gerçek Zamanlı Spektrogram (Waterfall):** Akıcı, zaman serisi şelale akışı veri yoğunluğunu mükemmel hissettiriyor. İnsanlar ekran kaydı alıp GIF/video paylaştığında anında dikkat çekecektir.
-3. **Akıllı Sinyal Analizi (Gemini AI):** Keşfedilen anormalliklerin frekansını analiz edip "Bu sinyal bir meteoroloji uydusundan geliyor olabilir" gibi teknik ve taktik raporlar sunması projeye yapay zekanın en yaratıcı uygulamasını katıyor.
-4. **Masaüstü Entegrasyonu (Electron):** Artık sadece tarayıcıda çalışan bir sayfa değil; kendi penceresi, özel siber ping ses efektleri ve döküm alma (CSV/JSON) butonlarıyla tamamen bağımsız bir terminal!
-
----
-
-## 🚀 Masaüstü Uygulaması Olarak Çalıştırma
-
-Gerekli tüm kütüphaneler (`electron`, `electron-builder`, `wait-on`, `concurrently`) projeye eklenmiştir. Projeyi masaüstü penceresinde çalıştırmak için aşağıdaki adımları izleyin:
+Gerekli tüm kütüphaneler (`electron`, `electron-builder`, `wait-on`, `concurrently`) projeye eklenmiştir. Projeyi yerel bir masaüstü penceresinde çalıştırmak için aşağıdaki adımları izleyin:
 
 ### 1. Geliştirme Modunda Başlatma (Dev Mode)
-Tarayıcıyı açmadan, yerel kod değişikliklerinizi anında masaüstü penceresinde görmek için şu komutu çalıştırın:
+Tarayıcıya ihtiyaç duymadan, yerel kod değişikliklerinizi anında masaüstü penceresinde görmek için şu komutu çalıştırın:
 ```bash
 npm run electron:dev
 ```
-*Bu komut, arka planda hem Express sunucusunu hem de Vite arayüzünü ayağa kaldırır, portun hazır olmasını bekler ve Electron penceresini otomatik olarak açar.*
+*Bu komut, arka planda Express API sunucusunu ve Vite React arayüzünü ayağa kaldırır, portun hazır olmasını bekler ve Electron penceresini otomatik olarak açarak içerik akışını yönlendirir.*
 
-### 2. Üretim Sürümü (Build) ve Paketleme (Packaging)
-Uygulamayı tek bir çalıştırılabilir dosya haline getirip arkadaşlarınıza göndermek veya GitHub Releases kısmında paylaşmak için:
+### 2. Derleme (Build) ve Paketleme (Packaging)
+Uygulamayı tek bir çalıştırılabilir dosya haline getirip yerel ağınızda veya GitHub Releases sekmesinde paylaşmak üzere paketlemek için:
 
 ```bash
 # Windows (.portable exe), macOS (.dmg) veya Linux (.AppImage) olarak derler
 npm run electron:package
 ```
-*Derleme tamamlandığında, projenizin ana dizininde **`/dist-desktop`** adında bir klasör oluşacaktır. İçinde işletim sisteminize uygun kuruluma hazır taşınabilir (portable) veya yükleyici dosyasını bulabilirsiniz!*
+*Derleme tamamlandığında, projenizin ana dizininde **`/dist-desktop`** adında bir klasör oluşacaktır. Bu klasör altında işletim sisteminize uygun taşınabilir (portable) veya yükleyici dosyasını bulabilirsiniz.*
 
 ---
 
-## 🔧 Masaüstü Mimarisi Nasıl Çalışıyor?
+## 🔧 Masaüstü Entegrasyon Mimarisi
 
-Arka planda inanılmaz stabil bir mimari kurulmuştur:
-* **Ana İşlem (Electron Main Process):** `electron/main.cjs` dosyası, işletim sistemiyle konuşur. Uygulama açıldığında saniyeler içinde arka planda saniyede binlerce örnek işleyebilen Express sinyal akış sunucusunu (`server.cjs`) alt işlem (child process) olarak ayağa kaldırır.
-* **Görsel Arayüz (Renderer Process):** React ve Vite ile güçlendirilmiş siber arayüz, arka planda çalışan bu yerel sunucuyla haberleşir.
-* **Mükemmel Kapanış (Auto-Clean):** Masaüstü penceresini kapattığınız anda arka plandaki sinyal sunucusu da otomatik olarak sonlandırılır, bilgisayarınızda gereksiz RAM/CPU harcanması engellenir.
+Astrova'nın masaüstü sürümü, kararlı ve kaynak dostu bir işlem yönetim mimarisi üzerine inşa edilmiştir:
+
+1. **Ana İşlem (Electron Main Process):** `packages/electron/main.cjs` dosyası, işletim sistemi seviyesindeki işlemleri yönetir. Masaüstü uygulaması açıldığında, arka planda saniyede binlerce telemetri paketini işleyebilen Express sinyal akış sunucusunu (`server.cjs`) alt işlem (child process) olarak ayağa kaldırır.
+2. **Görsel Arayüz (Renderer Process):** React ve Vite ile güçlendirilmiş kullanıcı arayüzü, yerel alt sunucuyla IPC (Inter-Process Communication) veya yerel REST uç noktaları üzerinden haberleşir.
+3. **Güvenli ve Otomatik Kapanış (Process Lifecycle):** Kullanıcı masaüstü penceresini kapattığı anda, arka planda çalışan Express sunucusu ve simülatör alt işlemleri otomatik olarak sonlandırılır. Bu sayede arka planda işlemci (CPU) ve RAM tüketen atıl süreçlerin kalması önlenir.
 
 ---
 
-## 📈 GitHub Yıldızlarını (Stars) Toplamak İçin Öneriler
+## 🛰️ Gelecek Yol Haritası ve Donanım Entegrasyonları
 
-Projeyi GitHub'da paylaştığınızda yüzlerce yıldız almak için şu taktikleri uygulayabilirsiniz:
+Astrova masaüstü sürümü, eğitim ve simülasyon sınırlarının ötesine geçerek gerçek yer istasyonu donanımlarıyla etkileşime girmek üzere tasarlanabilir:
 
-1. **Göz Alıcı Bir README.md Hazırlayın:**
-   * Projenin en üstüne spektrogram akışını ve alarm sesleri çaldığı o anı gösteren **yüksek kaliteli bir GIF veya kısa video** koyun. Görsellik GitHub'da her şeydir!
-2. **"Donanım Desteği" İpucu Ekleyin (WebUSB / RTL-SDR):**
-   * README dosyasında *"Gelecekte WebUSB API kullanılarak gerçek RTL-SDR donanımlarına (radyo anteni çipleri) doğrudan masaüstünden bağlanma desteği eklenecektir"* diye bir yol haritası (roadmap) belirtin. SDR topluluğu projeye akın edecektir!
-3. **Product Hunt ve Reddit Paylaşımları:**
-   * Projeyi tamamladıktan sonra r/cyberpunk, r/selfhosted ve r/SDR sub-redditlerinde "Yapay zeka analizli siber-punk radyo izleyici terminali yaptım" başlığıyla paylaşın.
-
-Astrova, şu haliyle bile hem mühendislik hem de tasarım olarak sınıfının en yaratıcı ve estetik işlerinden biri. Masaüstünüzde komutları çalıştırıp tadını çıkarın! 🛸🛰️
+* **SDR WebUSB ve Seri Port Entegrasyonu:** Masaüstü ortamında doğrudan RTL-SDR, HackRF veya Arduino tabanlı anten rotatörlerine (Rotator Controller) bağlanarak gerçek anten yönlendirme ve frekans takip sistemlerinin eğitici prototipleri yapılabilir.
+* **Çevrimdışı Yapay Zeka (Local LLM / Ollama):** Gemini API'sinin yanı sıra, masaüstünde tamamen çevrimdışı ve gizli çalışması gereken laboratuvarlar için Ollama üzerinden yerel Llama/Mistral modelleriyle telemetri ve anomali analiz raporlama desteği entegre edilebilir.

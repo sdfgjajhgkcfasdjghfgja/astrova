@@ -1,88 +1,97 @@
-# Contributing to Astrova 🛰️
+# Astrova'ya Katkıda Bulunma Rehberi 🛰️
 
-First off, thank you for considering contributing to the **Astrova SDR Satellite Telemetry Station**! This guide outlines how to get set up locally, code standards, and the process for submitting contributions.
+Astrova SDR ve Uydu Telemetri Simülasyon İstasyonu'na katkıda bulunmayı düşündüğünüz için teşekkür ederiz! Bu belge; yerel geliştirme ortamının kurulmasını, kod standartlarını, TypeScript ile Python arasındaki matematiksel algoritmik uyumluluk kurallarını ve değişiklik talebi (Pull Request) gönderme sürecini açıklamaktadır.
 
 ---
 
-## 🛠️ Local Development Setup
+## 🛠️ Yerel Geliştirme Ortamı Kurulumu
 
-To run and contribute to the system locally:
+Projeyi kendi bilgisayarınızda çalıştırmak ve geliştirmek için şu adımları izleyin:
 
-### Prerequisites
-* **Node.js**: `v18+` or higher (compatible with standard ESM/CJS runtime bundles)
-* **Python**: `3.10+` (if running/debugging the algorithmic anomaly detector locally)
+### Ön Gereksinimler
+* **Node.js**: `v18+` veya daha yeni bir sürüm (ESM/CJS modül yapılarıyla uyumlu)
+* **Python**: `v3.10+` (İHA ve SCADA Python anomali tespiti modellerini yerel olarak çalıştırmak ve doğrulamak için)
 
-### Steps
-1. **Clone the repository** and navigate to the root directory.
-2. **Install node dependencies**:
+### Adım Adım Kurulum ve Çalıştırma
+1. **Depoyu klonlayın** ve proje ana dizinine gidin:
+   ```bash
+   git clone <depo-adresi>
+   cd astrova
+   ```
+2. **Npm bağımlılıklarını yükleyin**:
    ```bash
    npm install
    ```
-3. **Set up local environment variables**:
-   Create a `.env` file at the root using our template:
+3. **Çevre değişkenlerini yapılandırın**:
+   Proje kök dizinindeki `.env.example` dosyasının bir kopyasını oluşturup adını `.env` yapın:
    ```bash
    cp .env.example .env
    ```
-   Add a valid `GEMINI_API_KEY` in the newly created file to enable the fully automated Space Copilot.
-4. **Boot Development Environment**:
+   Oluşturulan `.env` dosyasını düzenleyerek Gemini operasyon asistanını aktifleştirmek için geçerli bir `GEMINI_API_KEY` ekleyebilirsiniz.
+4. **Geliştirme Sunucusunu Başlatın**:
    ```bash
    npm run dev
    ```
-   The dev server binds to `http://localhost:3000`.
+   Bu komut hem backend Express API sunucusunu hem de frontend Vite React uygulamasını aynı anda başlatır. Geliştirme sunucusuna tarayıcınızdan şu adresten ulaşabilirsiniz:
+   👉 `http://localhost:3000`
 
 ---
 
-## 🏗️ Build & Production Deployment
+## 🏗️ Üretim Ortamı Yapılandırması (Production Build)
 
-To package the application for high-performance container environments:
-* **Compile and Bundle**:
-  ```bash
-  npm run build
-  ```
-  This command builds the static client-side React code with Vite into `dist/`, and bundles the Node/Express backend into a single self-contained CommonJS module at `dist/server.cjs` via `esbuild`.
-* **Launch Production Server**:
-  ```bash
-  npm run start
-  ```
-
----
-
-## 🌌 Core Technical Conventions
-
-When modifying the codebase, please respect these strict design standards:
-
-### 1. Algorithmic Parity (TypeScript vs. Python)
-We maintain a strict 1-to-1 consistency between the Python telemetry model (`anomaly_detector.py`) and the Node event loop (`server.ts`):
-* **Normal Bounds**: 
-  * Temperature: `-25.0°C` to `75.0°C`
-  * Battery Level: `10.0%` to `100.0%`
-  * Signal Strength: `-100.0 dBm` to `-30.0 dBm`
-  * Angular Velocity: `0.0 deg/s` to `12.5 deg/s`
-* **Rolling Buffers**: Standard deviation metrics are calculated against a rolling window size of the last **30** telemetry ticks.
-* **Vector Outliers**: Multi-variate anomalies are calculated using Euclidean distance offset from a dynamic running centroid.
-
-### 2. Protected SDR/GNU Radio Ingestion
-All hardware streaming endpoints require authorization using basic token matching:
-* **Endpoints**: `POST /api/gnuradio/signal` and `POST /api/gnuradio/inject-sim`
-* **Demo Token**: `ASTROVA-SDR-DEMO-KEY-2026`
-* All REST requests must carry: `Authorization: Bearer ASTROVA-SDR-DEMO-KEY-2026` or the API will reject with 401/403 errors.
-
-### 3. Visual Identity
-* We use **Tailwind CSS** for styling.
-* Font pairings utilize **Inter** for standard panels, paired with **JetBrains Mono** or **Fira Code** for charts, signal logs, and terminal elements.
-* Visual accent indicators (alerts, tour indicators, overlay components) must remain consistent with the **slate-colored tactical sci-fi flight control theme**.
-
----
-
-## 🤝 Contribution Workflow
-
-1. **Check open issues** or create one to describe the bug or feature you are addressing.
-2. **Fork/Branch off master**:
+Uygulamayı bir üretim sunucusunda veya Docker konteynerinde çalıştırmak üzere paketlemek için:
+1. **Derleme ve Paketleme**:
    ```bash
-   git checkout -b feature/orbital-xyz
+   npm run build
    ```
-3. **Format & Lint**: Ensure TypeScript compiles perfectly and files comply with static rules.
+   *Bu komut, istemci tarafındaki Vite/React kodlarını derleyip `/dist` klasörüne aktarır. Aynı zamanda `server.ts` Express sunucusunu `esbuild` kullanarak paketlenmiş, tek parçalık bir CommonJS modülü halinde `/dist/server.cjs` dosyasına derler.*
+2. **Üretim Sunucusunu Başlatma**:
+   ```bash
+   npm run start
+   ```
+
+---
+
+## 🌌 Çekirdek Teknik Standartlar ve Uyumluluk
+
+Astrova'da kod geliştirirken lütfen aşağıdaki kurallara ve mimari standartlara uyun:
+
+### 1. Algoritmik Eşlik (TypeScript ve Python Matematiksel Uyumu)
+Telemetri izleme modülünde kullanılan Z-Skoru anomali tespit algoritmalarının Python (`tests/` ve arka uç ML simülatörleri) ile Node.js sunucu kodları arasında matematiksel olarak birebir aynı sonuçları vermesi gerekmektedir:
+* **Nominal Güvenli Aralıklar**:
+  * Sıcaklık: `-25.0°C` ile `75.0°C` arası
+  * Batarya Seviyesi: `%10.0` ile `%100.0` arası
+  * Sinyal Gücü: `-100.0 dBm` ile `-30.0 dBm` arası
+  * Açısal Hız (Angular Velocity): `0.0 deg/s` ile `12.5 deg/s` arası
+* **Kayan Pencere Filtresi (Rolling Window Size):** Standart sapma ve ortalama değer hesaplamaları son **30** veri noktası (tick) üzerinden hesaplanmalıdır.
+* **Z-Skoru Hassasiyeti:** Z-Skorunun `3.0` barajını aşması durumu çok değişkenli bir anomali kabul edilmeli ve alarm tetiklenmelidir.
+
+### 2. Güvenli Donanım SDR/GNU Radio Veri Akışı
+GNU Radio veya simüle edilmiş harici veri aktarım uç noktaları (endpoints) token bazlı yetkilendirmeye tabidir:
+* **Kritik API Uç Noktaları:** `POST /api/gnuradio/signal` ve `POST /api/gnuradio/inject-sim`
+* **Demo Güvenlik Tokenı:** `ASTROVA-SDR-DEMO-KEY-2026`
+* Tüm harici sinyal verisi içeren REST istekleri, `Authorization: Bearer ASTROVA-SDR-DEMO-KEY-2026` başlığını taşımalıdır, aksi takdirde sunucu `401 Unauthorized` hatası döndürecektir.
+
+### 3. Arayüz ve Görsel Tasarım Standartları
+* Tüm stil kodlamaları için **Tailwind CSS** sınıfları kullanılmalıdır. Satır içi (inline) `style` veya harici CSS dosyaları oluşturulmamalıdır.
+* Tipografi olarak ana arayüz elemanlarında **Inter** yazı tipi, grafik veri etiketleri, terminal çıktıları ve sinyal günlüklerinde ise **JetBrains Mono** kullanılmalıdır.
+* Arayüz teması, **mat antrasit tonlar ve neon siber-fiziksel göstergeler** içeren sade, teknik ve göz yormayan bilimsel kontrol odası estetiğiyle uyumlu kalmalıdır.
+
+---
+
+## 🤝 Değişiklik Gönderme Adımları (Contribution Workflow)
+
+1. **Mevcut Sorunları (Issues) İnceleyin:** Çözmek istediğiniz bir hata veya eklemek istediğiniz bir simülasyon özelliği için mevcut iş kayıtlarını inceleyin veya yeni bir kayıt açın.
+2. **Yeni Bir Dal (Branch) Açın:**
+   ```bash
+   git checkout -b feature/yeni-simulasyon-ozelligi
+   ```
+3. **Kodunuzu Test Edin ve Düzenleyin:** Kodunuzun TypeScript derleyicisinden başarıyla geçtiğinden ve sözdizimi (lint) kurallarına uyduğundan emin olun:
    ```bash
    npm run lint
    ```
-4. **Submit a Pull Request** with clean commit messages and a clear summary of your visual or architectural changes.
+4. **Matematiksel Kararlılık Testlerini Çalıştırın:**
+   ```bash
+   npm run test
+   ```
+5. **Değişiklik Talebi (Pull Request) Gönderin:** Değişikliklerinizi net ve açıklayıcı commit mesajlarıyla ana depoya gönderebilirsiniz.

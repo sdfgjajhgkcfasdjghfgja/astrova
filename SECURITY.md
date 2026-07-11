@@ -1,40 +1,33 @@
-# Security Policy
+# Güvenlik Politikası 🛡️
 
-## Supported Versions
-
-The security of Astrova is a top priority. We actively patch and maintain the current major release version:
-
-| Version | Supported          |
-| ------- | ------------------ |
-| v1.0.x  | :white_check_mark: |
-| < v1.0  | :x:                |
+Astrova, eğitim ve araştırma odaklı bir simülasyon yazılımı olmasına rağmen, kullanıcıların gizli çevre değişkenlerini korumaya ve güvenli veri alım yöntemlerini sürdürmeye büyük önem verir.
 
 ---
 
-## 🔒 Security Architecture & Guardrails
+## 🔒 Güvenlik Mimarisi ve Koruma Katmanları
 
-To prevent unauthorized configuration drift, dual-use exposure, or credential leaks, Astrova enforces several secure architecture designs:
+Platform, yetkisiz erişimleri, kimlik bilgisi sızıntılarını ve yerel yapılandırma bozulmalarını önlemek amacıyla tasarlanmış belirli güvenlik standartlarına sahiptir:
 
-### 1. Server-Side Secret Isolation (No Client Leakage)
-* **Secret Isolation:** High-privilege API keys (such as `GEMINI_API_KEY`) and hardware bridge authentication tokens (such as `GNURADIO_AUTH_TOKEN`) are loaded and verified **strictly server-side** inside our Node/Express environment (`server.ts`).
-* **Client Boundary:** These secrets are never sent to, stored in, or made accessible to the browser client. Any client-side interactions with Gemini or GNU Radio pipelines route through secure, authenticated server-side proxies (`/api/*`).
+### 1. Sunucu Tarafı Sır Ayrımı (Server-Side Secret Isolation)
+* **İzole Kimlik Bilgileri:** Yapay zeka analizlerini tetikleyen `GEMINI_API_KEY` ve harici SDR entegrasyonu için kullanılan `GNURADIO_AUTH_TOKEN` gibi hassas anahtarlar **yalnızca sunucu tarafında** (Node/Express ortamında) yüklenir ve doğrulanır.
+* **İstemci Güvenliği:** Bu gizli anahtarlar asla istemci tarafına (tarayıcıya) gönderilmez, tarayıcı hafızasında saklanmaz veya istemci kodları içinden doğrudan erişilemez. Tarayıcıdan yapılan tüm yapay zeka ve telemetri analiz istekleri, güvenli sunucu proxy rotaları (`/api/*`) üzerinden geçirilerek filtrelenir.
 
-### 2. Token-Protected Hardware/SDR Ingestion
-Any external streaming inputs—including active GNU Radio companion scripts, remote SDR rigs, or peak scanners—must carry valid authentication headers:
-* **Route Guards:** Endpoints `POST /api/gnuradio/signal` and `POST /api/gnuradio/inject-sim` are gated by a specialized token comparison middleware.
-* **Header Matching:** Requesters must provide `Authorization: Bearer <GNURADIO_AUTH_TOKEN>` (which defaults to `ASTROVA-SDR-DEMO-KEY-2026` if not defined in your `.env` file). Unauthorized requests are instantly rejected with a `401 Unauthorized` block.
+### 2. Token Korumalı Donanım / SDR Ingestion Katmanı
+Simüle edilmiş veya gerçek harici veri akışı sağlayan GNU Radio Companion betikleri veya harici veri sağlayıcıları, belirli uç noktalara veri gönderirken yetkilendirme taşımak zorundadır:
+* **Korunan Uç Noktalar:** `POST /api/gnuradio/signal` ve `POST /api/gnuradio/inject-sim` uç noktaları token karşılaştırma ara katmanı (middleware) ile korunmaktadır.
+* **Başlık Doğrulaması:** İsteklerin geçerli sayılabilmesi için `Authorization: Bearer <GNURADIO_AUTH_TOKEN>` başlığı taşımaları gerekir (Bu token `.env` dosyasında aksi belirtilmedikçe varsayılan olarak `ASTROVA-SDR-DEMO-KEY-2026` değerini alır). Yetkisiz veya geçersiz başlık içeren istekler sunucu tarafından anında `401 Unauthorized` koduyla reddedilir.
 
-### 3. Graceful Key Verification & Fail-Safes
-* The server performs a safe initialization check on boot to verify whether `GEMINI_API_KEY` is set.
-* If a key is absent, the backend disables the declassification decoder pipeline gracefully and issues standard warning headers rather than crashing. This avoids exposing raw internal stack traces or server errors to potential external evaluators.
+### 3. Esnek Hata Yönetimi ve Fail-Safe Sistemleri
+* Uygulama başlatılırken, sunucu arka planda `GEMINI_API_KEY` anahtarının mevcut olup olmadığını denetler.
+* API anahtarı girilmemişse, sistem çökmek yerine yapay zeka destekli anomali raporlama özelliklerini zarif bir şekilde devre dışı bırakır ve arayüzde bilgilendirici uyarı panelleri gösterir. Bu durum, sunucuya ait iç hata günlüklerinin (stack traces) ve sistem detaylarının yetkisiz kişilere ifşa edilmesini engeller.
 
 ---
 
-## 🛡️ Reporting a Vulnerability
+## 🛡️ Güvenlik Açığı Bildirimi
 
-**Please do not report security vulnerabilities through public GitHub issues.**
+Astrova kod tabanında tespit ettiğiniz olası bir güvenlik açığını (token atlatma, dizin geçişi veya bellek sızıntıları vb.) lütfen **kamuya açık GitHub sorunlarında (Issues) paylaşmayınız.**
 
-If you discover a security vulnerability (such as a token bypass, directory traversal, or memory leak), please report it responsibly:
-1. Email your findings directly to the project security response team at **security@astrova.sdr.academy** (or your designated organization contact).
-2. Include a detailed description of the issue, step-by-step instructions to reproduce the vulnerability, and a potential proof-of-concept if available.
-3. Allow us up to 48 hours to acknowledge your report and coordinate a fix before disclosing it publicly.
+Güvenli ve koordineli bir yama süreci yürütmek adına:
+1. Bulgularınızı ayrıntılı olarak **security@astrova.sdr.academy** adresine (veya projenin yönetici ekibine) e-posta yoluyla iletebilirsiniz.
+2. E-postanızda açığın detaylı açıklamasını, yeniden tetiklemek için gereken adımları ve varsa çalışan örnek kod parçalarını (Proof of Concept) paylaşın.
+3. Raporunuzu aldıktan sonra 48 saat içinde size dönüş yapacak ve gerekli düzeltmeleri koordineli bir şekilde yayınlayacağız.

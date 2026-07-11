@@ -17,7 +17,11 @@
     "jsx": "react-jsx",
     "paths": {
       "@/*": [
+        "./packages/frontend/src/*",
         "./*"
+      ],
+      "@astrova/shared": [
+        "./packages/shared/src/index.ts"
       ]
     },
     "allowImportingTsExtensions": true,

@@ -1,34 +1,34 @@
-# Privacy Policy
+# Gizlilik Politikası 👤
 
-Astrova is committed to protecting your privacy and ensuring transparency in how live data feeds, telemetry packets, and diagnostic inputs are processed.
-
----
-
-## 🛰️ 1. Telemetry and RF Data Processing (In-Memory Only)
-
-Astrova processes high-frequency satellite telemetry (such as battery charge, temperatures, angular velocities, and signal-to-noise ratios) and Software Defined Radio (SDR) spectral peaks:
-
-* **Zero Persistent Logging:** All incoming telemetry is streamed, processed, and analyzed **entirely in-memory** or dispatched live via Server-Sent Events (SSE) to connected web browsers. We do not persist real-time telemetry datasets, signal captures, or physical location data to disk or cloud databases.
-* **Local Ingestion:** Live GNU Radio companion streams remain completely local to your hosting environment or designated docker container network.
+Astrova projesi, kullanıcıların gizliliğini korumayı, canlı veri akışlarının, simüle edilmiş telemetri paketlerinin ve arayüze yüklenen tanısal dökümanların güvenli ve şeffaf bir şekilde işlenmesini sağlamayı taahhüt eder.
 
 ---
 
-## 🔑 2. API Key and Secret Safety
+## 🛰️ 1. Telemetri ve RF Spektrum Verisi İşleme (Yalnızca Bellek İçi)
 
-To power declassified AI space briefings, you may optionally supply a `GEMINI_API_KEY`:
+Astrova, yüksek frekanslı yapay uydu telemetri paketlerini (batarya voltajı, sıcaklık, açısal hızlar vb.) ve yazılım tabanlı radyo (SDR) spektrum zirve verilerini işler:
 
-* **Direct Key Transit:** Your API key is retrieved strictly from the server's local environment variables or secrets store. It is never stored on external databases or exposed to client-side scripts.
-* **Safe Proxies:** All AI analysis is performed through a secure server-side route (`/api/gemini/analyze`). The client browser sends only the raw, anonymous telemetry payload (e.g., specific temperatures and battery levels) to be summarized. No personal identifiers, server metadata, or unauthorized system logs are sent.
-
----
-
-## 🌐 3. Third-Party Services & Integrations
-
-* **Google Gemini API:** When you click "ANOMALY ANALYZE", the application uses the `@google/genai` SDK to fetch declassification details from Google's Gemini models. The payload contains only mock or simulated satellite telemetry fields. Please refer to Google's Privacy Policy and AI Terms of Service for details on how API inputs are processed.
-* **Zero Analytics Cookies:** The Astrova front-end does not include commercial trackers, marketing cookies, or tracking pixels (e.g., Google Analytics, Facebook Pixel). Your operational workflow remains fully private.
+* **Sıfır Kalıcı Günlük Tutma (Zero Persistent Logging):** Gelen tüm telemetri akışı **tamamen bellek içinde (in-memory)** işlenir, analiz edilir ve sunucudan bağlı web tarayıcısına Server-Sent Events (SSE) teknolojisi kullanılarak anlık olarak iletilir. Canlı telemetri veri setlerini, ham spektrum kayıtlarını veya coğrafi yer istasyonu konumlarını diske veya harici bir bulut veritabanına kalıcı olarak kaydetmeyiz.
+* **Yerel İşleme (Local-First):** GNU Radio Companion veya yerel simülatörler üzerinden gelen veri akışları tamamen yerel ağınızda (localhost) veya izole Docker konteyner ağınız içinde kalır.
 
 ---
 
-## 📝 4. Changes to This Policy
+## 🔑 2. API Anahtarları ve Sırların Güvenliği
 
-We may update this privacy statement occasionally to reflect improvements in our data security practices or updates to our secure ingestion layers. Continued use of the application indicates acceptance of our local-first, privacy-oriented telemetry protocols.
+Yapay zeka destekli yer istasyonu analizlerini aktifleştirmek için isteğe bağlı olarak bir `GEMINI_API_KEY` sağlayabilirsiniz:
+
+* **Doğrudan Anahtar Aktarımı:** API anahtarınız kesinlikle sadece yerel sunucunuzdaki çevre değişkenlerinden (`.env`) veya gizli anahtar yönetim mekanizmanızdan okunur. Harici bir Astrova veritabanında saklanmaz veya istemci tarafındaki (tarayıcı) Javascript kodlarına açık edilmez.
+* **Güvenli API Vekili (Proxy):** Yapay zeka analizleri güvenli bir sunucu rotası (`/api/gemini/analyze` veya benzeri) üzerinden proxy edilerek gerçekleştirilir. Gemini API'sine yalnızca anomali anındaki telemetri sayısal değerleri (örn: sıcaklık ve voltaj değerleri) gönderilir. Kişisel tanımlayıcı veriler, IP adresleri veya yetkisiz sistem günlükleri kesinlikle OpenAI veya Google servislerine aktarılmaz.
+
+---
+
+## 🌐 3. Üçüncü Taraf Entegrasyonlar ve Çerezler
+
+* **Google Gemini API:** "ANOMALY ANALYZE" butonuna tıkladığınızda, uygulama `@google/genai` resmi SDK'sını kullanarak analiz raporları üretir. Bu analizler sırasında sadece simüle edilmiş teknik telemetri verileri girdi olarak kullanılır. Google'ın yapay zeka verilerini nasıl işlediği hakkında detaylı bilgi için Google Gizlilik Politikası ve Gemini API Hizmet Şartları'nı inceleyebilirsiniz.
+* **Sıfır İzleyici Çerez Politikası:** Astrova kullanıcı arayüzü; hiçbir ticari izleyici, reklam çerezi veya pazarlama amaçlı takip pikseli (Google Analytics, Facebook Pixel vb.) barındırmaz. Operasyonel analiz çalışmalarınız tamamen bağımsız ve özel kalır.
+
+---
+
+## 📝 4. Politika Değişiklikleri
+
+Güvenlik standartlarımız geliştikçe veya yeni yerel alım protokolleri ekledikçe bu gizlilik bildirimini zaman zaman güncelleyebiliriz. Yazılımı kullanmaya devam etmeniz, yerel odaklı gizlilik standartlarımızı kabul ettiğiniz anlamına gelir.

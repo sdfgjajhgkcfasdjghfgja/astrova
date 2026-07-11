@@ -1,45 +1,45 @@
-# Code of Conduct
+# Davranış Kuralları (Code of Conduct) 🤝
 
-## Our Pledge
+## Taahhüdümüz
 
-We, as contributors and maintainers, pledge to make participation in our project and our community a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, caste, color, religion, or sexual identity and orientation.
+Bizler, katkıda bulunanlar ve yürütücüler olarak, projemize ve topluluğumuza katılımı; yaş, vücut ölçüsü, görünür veya görünmez engel durumu, etnik köken, cinsiyet özellikleri, cinsiyet kimliği ve ifadesi, deneyim düzeyi, eğitim düzeyi, sosyo-ekonomik durum, milliyet, kişisel görünüm, ırk, din veya cinsel kimlik ve yönelim gözetmeksizin herkes için tacizden uzak, güvenli ve sağlıklı bir deneyim haline getirmeyi taahhüt ederiz.
 
-We pledge to act and interact in ways that contribute to an open, welcoming, diverse, inclusive, and healthy community.
-
----
-
-## Our Standards
-
-Examples of behavior that contributes to a positive environment for our community include:
-* Demonstrating empathy and kindness toward other people
-* Being respectful of differing opinions, viewpoints, and experiences
-* Giving and gracefully receiving constructive feedback
-* Accepting responsibility and apologizing to those affected by our mistakes, and learning from the experience
-* Focusing on what is best not just for us as individuals, but for the overall community
-
-Examples of unacceptable behavior include:
-* The use of sexualized language or imagery, and unwelcome sexual attention or advances
-* Trolling, insulting or derogatory comments, and personal or political attacks
-* Public or private harassment
-* Publishing others' private information, such as a physical or email address, without their explicit permission
-* Other conduct which could reasonably be considered inappropriate in a professional setting
+Açık, misafirperver, çeşitliliği destekleyen ve kapsayıcı bir topluluğa katkıda bulunacak şekilde hareket etmeyi ve etkileşim kurmayı taahhüt ederiz.
 
 ---
 
-## Enforcement Responsibilities
+## Standartlarımız
 
-Community leaders are responsible for clarifying and enforcing our standards of acceptable behavior and will take appropriate and fair corrective action in response to any behavior that they deem inappropriate, threatening, offensive, or harmful.
+Topluluğumuz için olumlu bir ortama katkıda bulunan davranış örnekleri şunlardır:
+* Diğer insanlara karşı empati ve nezaket göstermek
+* Farklı görüşlere, bakış açılarına ve deneyimlere saygı duymak
+* Yapıcı geri bildirimleri saygıyla vermek ve olgunlukla kabul etmek
+* Hatalarımızın sorumluluğunu üstlenmek, etkilenenlerden özür dilemek ve bu deneyimlerden ders çıkarmak
+* Sadece bireysel olarak kendimiz için değil, tüm topluluk için en iyisinin ne olduğuna odaklanmak
 
-Community leaders have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to this Code of Conduct, and will communicate reasons for moderation decisions when appropriate.
+Kabul edilemez davranış örnekleri ise şunlardır:
+* Cinselleştirilmiş dil veya görsellerin kullanılması, istenmeyen cinsel ilgi veya yakınlaşmalar
+* Trollemek, hakaret edici veya aşağılayıcı yorumlar, kişisel ya da siyasi saldırılar
+* Kamu açık veya özel alanlarda taciz etmek
+* Açık rıza olmaksızın başkalarının e-posta veya fiziksel adres gibi özel bilgilerini yayınlamak
+* Profesyonel bir ortamda mantıksız ve uygunsuz kabul edilebilecek diğer davranışlar
 
 ---
 
-## Scope
+## Yürütme Sorumlulukları
 
-This Code of Conduct applies within all community spaces, and also applies when an individual is officially representing the community in public spaces. Examples of representing our community include using an official e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event.
+Topluluk liderleri, kabul edilebilir davranış standartlarımızı netleştirmek ve uygulamakla sorumludur. Uygunsuz, tehdit edici, saldırgan veya zararlı gördükleri herhangi bir davranışa karşı adil ve düzeltici önlemler alacaklardır.
+
+Topluluk liderleri, bu Davranış Kuralları'na uymayan yorumları, commit'leri, kodları, wiki düzenlemelerini ve diğer katkıları silme, düzenleme veya reddetme hakkına ve sorumluluğuna sahiptir. Gerekli durumlarda moderasyon kararlarının nedenlerini toplulukla paylaşırlar.
 
 ---
 
-## Attribution
+## Kapsam
 
-This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org), version 2.1, available at [https://www.contributor-covenant.org/version/2/1/code_of_conduct.html](https://www.contributor-covenant.org/version/2/1/code_of_conduct.html).
+Bu Davranış Kuralları, proje kapsamındaki tüm topluluk alanlarında ve ayrıca bir bireyin topluluğu halka açık alanlarda resmi olarak temsil ettiği durumlarda geçerlidir. Topluluğu temsil etme durumlarına; resmi bir e-posta adresi kullanmak, resmi bir sosyal medya hesabı üzerinden paylaşımda bulunmak veya çevrimiçi ya da çevrimdışı bir etkinlikte görevlendirilmiş bir temsilci olarak hareket etmek dahildir.
+
+---
+
+## Atıf
+
+Bu Davranış Kuralları, [Contributor Covenant](https://www.contributor-covenant.org) versiyon 2.1'den uyarlanmıştır. Orijinal sürüme [https://www.contributor-covenant.org/version/2/1/code_of_conduct.html](https://www.contributor-covenant.org/version/2/1/code_of_conduct.html) adresinden ulaşabilirsiniz.
