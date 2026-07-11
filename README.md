@@ -1,14 +1,14 @@
-# 🛰️ Astrova — High-Growth SpaceTech Ground Station & Telemetry Intelligence Platform
+# 🛰️ Astrova — High-Growth Aerospace & Critical Infrastructure Telemetry Intelligence Platform
 
-![Astrova Banner](./src/assets/images/astrova_banner_1782543879024.jpg)
+![Astrova Dashboard](./src/assets/images/astrova_dashboard_v3_1783759719495.jpg)
 
-**Astrova** is a high-performance space intelligence and ground station simulation platform built for commercial, military, and academic satellite constellation operators. It processes software-defined radio (SDR) DSP spectra, simulates real-time orbital visibility footprints, coordinates Multi-Agent AI diagnostic fleets, and models high-growth SaaS business metrics toward a $10B+ Decacorn valuation.
+**Astrova** is a high-performance aerospace, satellite ground station, and critical infrastructure telemetry intelligence platform. Built for commercial, military, and academic operators, it processes software-defined radio (SDR) DSP spectra, models unmanned vehicle (UAV/drone) telemetry, detects SCADA/Industrial IoT anomalies, and simulates real-time orbital constellations—all while modeling high-growth SaaS business metrics towards a $10B+ Decacorn valuation.
 
 ---
 
 ## ⚡ Core Capabilities
 
-*   **🌍 3D Constellation Orbit Tracker:** Simulates low Earth orbit (LEO) satellite footprints dynamically using real-time sivil Two-Line Element sets (TLE) and SGP4 mechanics.
+*   **🌍 3D Constellation Orbit Tracker:** Simulates low Earth orbit (LEO) satellite footprints dynamically using real-time civil Two-Line Element sets (TLE) and SGP4 mechanics.
 *   **📡 SDR Spectrum & DSP Simulation:** Real-time software-defined radio visualization tracking signal attenuation, Doppler shifts, interference, and GPS scintillation.
 *   **🧠 Multi-Agent AI Diagnostics (FDIR):** Three specialized AI agents (Analyst, Diagnostic, Action) coordinate autonomously to detect, diagnose, and remediate spacecraft anomalies.
 *   **🦄 Decacorn SaaS Valuation Suite:** Real-time VC/founder simulator calculating Annual Recurring Revenue (ARR), enterprise valuation multiples (10x-40x), and cost savings from disaster prevention.
@@ -52,4 +52,4 @@ npm run test
 ---
 
 ## ⚠️ Disclaimer
-Astrova is strictly designed for educational, research, and non-destructive space-communication simulation. Always comply with sivil telecommunication laws and RF spectrum guidelines.
+Astrova is strictly designed for educational, research, and non-destructive space-communication simulation. Always comply with civil telecommunication laws and RF spectrum guidelines.
